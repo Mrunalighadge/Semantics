@@ -5,7 +5,7 @@ import streamlit as st
 import pickle
 
 # Load the saved model and vectorizer using pickle
-with open('random_forest_model.pkl', 'rb') as model_file:
+with open('random_forest_model.pkl'(1), 'rb') as model_file:
     model = pickle.load(model_file)
 
 with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
