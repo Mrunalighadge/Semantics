@@ -1,0 +1,433 @@
+1.• Create a data frame employee_data with the following columns and Extract employees who have more than 5 years of experience and display the result.
+1. Employee_ID (Integer): 101, 102, 103, 104, 105
+2. Name (Character): (Enter five employee names of your choice)
+3. Department (Character): "HR", "Finance", "IT", "Marketing", "Sales"
+4. Salary (Numeric): (Enter salaries for each employee)
+5. Experience (Integer): (Enter years of experience for each employee)
+=>
+# Create data frame
+employee_data <- data.frame(
+  Employee_ID = c(101, 102, 103, 104, 105),
+  Name = c("Amit", "Priya", "Rahul", "Neha", "Suresh"),
+  Department = c("HR", "Finance", "IT", "Marketing", "Sales"),
+  Salary = c(50000, 60000, 70000, 55000, 65000),
+  Experience = c(3, 7, 5, 8, 6)
+)
+ 
+# Extract employees with more than 5 years of experience
+experienced_employees <- subset(employee_data, Experience > 5)
+print(experienced_employees)
+-------------------------------------------------------------------------
+
+2.Perform a Regression Analysis in R to predict house prices in Pune using relevant
+factors such as house size, number of bedrooms, and house age.
+
+# Example dataset
+house_data <- data.frame(
+  Size = c(1200, 1500, 1800, 2000, 2500),
+  Bedrooms = c(2, 3, 3, 4, 4),
+  Age = c(5, 10, 15, 20, 25),
+  Price = c(5000000, 7000000, 8500000, 9000000, 12000000)
+)
+ 
+# Perform Linear Regression
+model <- lm(Price ~ Size + Bedrooms + Age, data = house_data)
+summary(model)
+------------------------------------------------------------------------------
+3.Perform Association Rule Mining in R using the Apriori algorithm on a retail store
+transaction dataset. Identify frequent itemsets, generate association rules,
+
+library(arules)
+ 
+# Example transaction data
+transactions <- list(
+  c("Milk", "Bread", "Butter"),
+  c("Bread", "Butter"),
+  c("Milk", "Bread"),
+  c("Butter", "Milk"),
+  c("Milk", "Bread", "Butter", "Eggs")
+)
+# Convert to transactions object
+trans <- as(transactions, "transactions")
+ 
+# Apply Apriori algorithm
+rules <- apriori(trans, parameter = list(supp = 0.2, conf = 0.5))
+inspect(rules)
+-----------------------------------------------------------------------------------------
+4.Perform data manipulation using data frames and strings, then visualize the data using
+a bar plot in R. (Student Name, Marks, Age)
+=># Load necessary library
+library(ggplot2)
+
+# Creating a DataFrame in R
+student_data <- data.frame(
+  Student_Name = c('Amit', 'Priya', 'Rahul', 'Sneha', 'Vikas'),
+  Marks = c(85, 90, 78, 92, 88),
+  Age = c(20, 21, 22, 20, 23)
+)
+
+# Data manipulation - Convert names to uppercase
+student_data$Student_Name <- toupper(student_data$Student_Name)
+
+# Sorting data by Marks in descending order
+student_data <- student_data[order(-student_data$Marks), ]
+
+# Display manipulated data
+print(student_data)
+
+# Visualizing the data using a bar plot
+ggplot(student_data, aes(x = Student_Name, y = Marks, fill = Student_Name)) + 
+  geom_bar(stat = "identity") + 
+  theme_minimal() + 
+  labs(title = "Student Marks Visualization", x = "Student Name", y = "Marks")
+
+  
+------------------------------------------------------------------------------------------------------- 
+5.Perform K-Means and Clustering on a manually created cricket score
+dataset.(Player_ID,Matches,Runs,Strike_rate,Centuries)
+
+# Create dataset
+cricket_data <- data.frame(
+  Player_ID = c(1, 2, 3, 4, 5),
+  Matches = c(50, 40, 70, 30, 60),
+  Runs = c(2000, 1500, 3000, 1000, 2500),
+  Strike_rate = c(120, 110, 130, 100, 125),
+  Centuries = c(5, 2, 8, 1, 6)
+)
+ 
+# Apply K-Means Clustering
+set.seed(123)
+clusters <- kmeans(cricket_data[,2:5], centers = 2)
+cricket_data$Cluster <- clusters$cluster
+print(cricket_data)
+ ------------------------------------------------------------------------------------------------------------
+
+6.A retail company maintains records of its customer purchases. a dataset that includes
+Customer ID, Name, Product Purchased, Quantity, Price per Unit, and City. Your task
+is to manipulate the data using data frames, vectors, and string operations in R.
+
+# Load necessary library
+library(dplyr)
+
+# Creating vectors for customer data
+customer_ids <- c(101, 102, 103, 104, 105)
+names <- c("Amit Kumar", "Priya Sharma", "Rahul Singh", "Sneha Patil", "Vikas Joshi")
+products <- c("Laptop", "Phone", "Tablet", "Headphones", "Smartwatch")
+quantities <- c(1, 2, 1, 3, 2)
+prices <- c(50000, 30000, 20000, 5000, 15000)
+cities <- c("Pune", "Mumbai", "Delhi", "Bangalore", "Hyderabad")
+
+# Creating a retail customer dataset using vectors
+retail_data <- data.frame(
+  Customer_ID = customer_ids,
+  Name = names,
+  Product_Purchased = products,
+  Quantity = quantities,
+  Price_per_Unit = prices,
+  City = cities
+)
+
+# Calculating total purchase amount
+retail_data <- retail_data %>% mutate(Total_Amount = Quantity * Price_per_Unit)
+
+# Converting customer names and product names to uppercase
+retail_data$Name <- toupper(retail_data$Name)
+retail_data$Product_Purchased <- toupper(retail_data$Product_Purchased)
+
+# Extracting first names using string operations
+retail_data$First_Name <- sapply(strsplit(retail_data$Name, " "), `[`, 1)
+
+# Filtering customers who purchased more than 1 quantity
+multiple_purchases <- filter(retail_data, Quantity > 1)
+
+# Display manipulated data
+print(retail_data)
+print("Customers who purchased more than 1 quantity:")
+print(multiple_purchases)
+--------------------------------------------------------------------------------------------------------------------
+7.implement a classification algorithm in R The goal is to classify customers as
+"Frequent Buyer" or "Occasional Buyer" based on their purchasing behavior.
+# Load necessary libraries
+library(dplyr)
+library(caret)
+
+# Creating a retail customer dataset
+customer_data <- data.frame(
+  Customer_ID = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110),
+  Total_Purchases = c(15, 5, 30, 8, 50, 3, 40, 12, 6, 25),
+  Total_Amount_Spent = c(100000, 30000, 250000, 50000, 500000, 15000, 400000, 80000, 35000, 200000),
+  Visit_Frequency = c(20, 8, 35, 10, 60, 5, 45, 15, 7, 30),
+  Buyer_Type = c("Frequent Buyer", "Occasional Buyer", "Frequent Buyer", "Occasional Buyer", "Frequent Buyer", 
+                 "Occasional Buyer", "Frequent Buyer", "Occasional Buyer", "Occasional Buyer", "Frequent Buyer")
+)
+
+# Splitting the dataset into training and testing sets
+set.seed(123)
+index <- createDataPartition(customer_data$Buyer_Type, p = 0.8, list = FALSE)
+train_data <- customer_data[index, ]
+test_data <- customer_data[-index, ]
+
+# Training a logistic regression model
+model <- train(Buyer_Type ~ Total_Purchases + Total_Amount_Spent + Visit_Frequency, 
+               data = train_data, 
+               method = "glm", 
+               family = "binomial")
+
+# Making predictions
+predictions <- predict(model, test_data)
+
+# Evaluating the model
+conf_matrix <- confusionMatrix(predictions, test_data$Buyer_Type)
+print(conf_matrix)
+ ---------------------------------------------------------------------------------------------------------------------
+8.Perform Data Pre-processing in R using the manual dataset by handling missing
+values, encoding categorical variables and displaying the cleaned dataset.
+
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+
+# Creating a dataset with missing values and categorical variables
+data <- data.frame(
+  Customer_ID = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110),
+  Name = c("Amit Kumar", "Priya Sharma", "Rahul Singh", "Sneha Patil", "Vikas Joshi", 
+           "Anita Verma", NA, "Rohan Das", "Suresh Nair", "Meena Iyer"),
+  Age = c(30, 25, 40, NA, 35, 28, 32, 45, NA, 29),
+  City = c("Pune", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Delhi", "Mumbai"),
+  Total_Purchases = c(15, 5, 30, 8, 50, 3, 40, 12, 6, 25),
+  Buyer_Type = c("Frequent", "Occasional", "Frequent", "Occasional", "Frequent", 
+                 "Occasional", "Frequent", "Occasional", "Occasional", "Frequent")
+)
+
+# Handling missing values
+# Replacing missing names with "Unknown"
+data$Name[is.na(data$Name)] <- "Unknown"
+
+# Replacing missing Age values with the mean Age
+data$Age[is.na(data$Age)] <- mean(data$Age, na.rm = TRUE)
+
+# Encoding categorical variables (One-hot encoding for Buyer_Type)
+data <- data %>% mutate(Buyer_Type_Encoded = ifelse(Buyer_Type == "Frequent", 1, 0))
+
+# Display the cleaned dataset
+print(data)
+-----------------------------------------------------------------------------------------------------------------------------
+9.A supermarket wants to analyze customer purchase patterns to increase sales. a
+dataset of customer purchases. Perform Association Rule Mining using the Apriori
+algorithm in R
+
+# Load necessary libraries
+library(arules)
+library(arulesViz)
+
+# Creating a sample transaction dataset
+transactions <- list(
+  c("Milk", "Bread", "Butter"),
+  c("Milk", "Bread"),
+  c("Milk", "Diaper", "Beer", "Cola"),
+  c("Bread", "Diaper", "Beer", "Butter"),
+  c("Milk", "Diaper", "Beer", "Cola"),
+  c("Bread", "Butter"),
+  c("Milk", "Diaper", "Beer"),
+  c("Milk", "Cola"),
+  c("Bread", "Butter", "Cola"),
+  c("Diaper", "Beer", "Butter")
+)
+
+# Converting list into transaction format
+trans <- as(transactions, "transactions")
+
+# Performing Association Rule Mining using the Apriori algorithm
+rules <- apriori(trans, parameter = list(supp = 0.2, conf = 0.6))
+
+# Display the generated rules
+inspect(rules)
+
+# Visualizing association rules
+plot(rules, method = "graph", control = list(type = "items"))
+--------------------------------------------------------------------------------------------------------------------------------
+10.A company wants to analyze employee performance based on their department,
+salary, and experience. Perform data manipulation using data frames and string
+operations, then visualize the average salary per department using a bar plot.
+
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Creating an employee dataset
+employee_data <- data.frame(
+  Employee_ID = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110),
+  Name = c("Amit Kumar", "Priya Sharma", "Rahul Singh", "Sneha Patil", "Vikas Joshi", 
+           "Anita Verma", "Rohan Das", "Suresh Nair", "Meena Iyer", "Rajesh Gupta"),
+  Department = c("HR", "Finance", "IT", "Marketing", "Sales", "HR", "Finance", "IT", "Marketing", "Sales"),
+  Salary = c(50000, 60000, 80000, 55000, 70000, 52000, 61000, 82000, 56000, 71000),
+  Experience = c(3, 5, 8, 4, 6, 2, 7, 10, 3, 5)
+)
+
+# Converting employee names to uppercase
+employee_data$Name <- toupper(employee_data$Name)
+
+# Calculating average salary per department
+avg_salary <- employee_data %>% group_by(Department) %>% summarize(Average_Salary = mean(Salary))
+
+# Visualizing average salary per department using a bar plot
+ggplot(avg_salary, aes(x = Department, y = Average_Salary, fill = Department)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Average Salary per Department", x = "Department", y = "Average Salary")
+
+--------------------------------------------------------------------------------------------------------------------------------
+11.A company wants to predict its sales revenue based on the amount spent on
+advertising. You are required to implement Simple Linear Regression using manual
+calculations in R. (Manually compute Slope (m) and Intercept (b).)
+
+# Load necessary libraries
+library(ggplot2)
+
+# Creating a dataset for advertising expenses and sales revenue
+advertising_data <- data.frame(
+  Ad_Spend = c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55),  # Amount spent on ads (in thousands)
+  Sales_Revenue = c(20, 25, 30, 38, 42, 48, 52, 58, 63, 68)  # Sales revenue (in thousands)
+)
+
+# Calculating means
+mean_x <- mean(advertising_data$Ad_Spend)
+mean_y <- mean(advertising_data$Sales_Revenue)
+
+# Calculating slope (m)
+numerator <- sum((advertising_data$Ad_Spend - mean_x) * (advertising_data$Sales_Revenue - mean_y))
+denominator <- sum((advertising_data$Ad_Spend - mean_x)^2)
+m <- numerator / denominator
+
+# Calculating intercept (b)
+b <- mean_y - (m * mean_x)
+
+# Displaying slope and intercept
+print(paste("Slope (m):", m))
+print(paste("Intercept (b):", b))
+
+# Predicting Sales Revenue using the regression equation\advertising_data$Predicted_Sales <- m * advertising_data$Ad_Spend + b
+
+# Visualizing the regression line
+ggplot(advertising_data, aes(x = Ad_Spend, y = Sales_Revenue)) +
+  geom_point(color = "blue") +
+  geom_abline(intercept = b, slope = m, color = "red", linetype = "dashed") +
+  theme_minimal() +
+  labs(title = "Sales Revenue vs Advertising Spend", x = "Advertising Spend (in thousands)", y = "Sales Revenue (in thousands)")
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+12.• A university wants to analyze student exam scores. The dataset includes Student ID,
+Name, Subject, Marks Obtained, Total Marks, and Grade.
+i) Extract first names from the Name column.
+ii) Convert subject names to uppercase
+
+# Load necessary libraries
+library(dplyr)
+library(stringr)
+
+# Creating a student exam dataset
+student_data <- data.frame(
+  Student_ID = c(201, 202, 203, 204, 205),
+  Name = c("Amit Kumar", "Priya Sharma", "Rahul Singh", "Sneha Patil", "Vikas Joshi"),
+  Subject = c("Mathematics", "Science", "English", "History", "Geography"),
+  Marks_Obtained = c(85, 78, 92, 74, 88),
+  Total_Marks = c(100, 100, 100, 100, 100),
+  Grade = c("A", "B", "A+", "C", "A")
+)
+
+# Extracting first names from the Name column
+student_data$First_Name <- word(student_data$Name, 1)
+
+# Converting subject names to uppercase
+student_data$Subject <- toupper(student_data$Subject)
+
+# Display the updated dataset
+print(student_data)
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+13.• A bank wants to classify customers as "Eligible" or "Not Eligible" for a loan based
+on their income and credit score.
+I. Customers with Income ≥ 50000 AND Credit Score ≥ 700 are classified as "Eligible".
+II. Others are classified as "Not Eligible".
+
+# Load necessary libraries
+library(dplyr)
+
+# Creating a bank customer dataset
+customer_data <- data.frame(
+  Customer_ID = c(301, 302, 303, 304, 305),
+  Name = c("Amit Kumar", "Priya Sharma", "Rahul Singh", "Sneha Patil", "Vikas Joshi"),
+  Income = c(60000, 45000, 75000, 30000, 52000),
+  Credit_Score = c(720, 680, 750, 650, 710)
+)
+
+# Classifying customers as Eligible or Not Eligible for a loan
+customer_data <- customer_data %>% 
+  mutate(Loan_Eligibility = ifelse(Income >= 50000 & Credit_Score >= 700, "Eligible", "Not Eligible"))
+
+# Display the updated dataset
+print(customer_data)
+
+--------------------------------------------------------------------------------------------------------------------------------
+14.• following dataset containing information about customer purchases in a retail store
+Create Data Frame and Handle Missing Values:
+Customer_ID Name Age Purchase_Amount City
+101 Raj 21 2000 Mumbai
+102 Kunal NA 1000 Pune
+103 Rajesh 27 NA Kolkata
+104 Omkar NA 4000 Pune
+105 Sandeep 20 7000 Nashik
+
+# Load necessary libraries
+library(dplyr)
+
+# Creating a customer purchase dataset with missing values
+customer_data <- data.frame(
+  Customer_ID = c(101, 102, 103, 104, 105),
+  Name = c("Raj", "Kunal", "Rajesh", "Omkar", "Sandeep"),
+  Age = c(21, NA, 27, NA, 20),
+  Purchase_Amount = c(2000, 1000, NA, 4000, 7000),
+  City = c("Mumbai", "Pune", "Kolkata", "Pune", "Nashik")
+)
+
+# Handling missing values
+# Replacing missing Age values with the mean age
+customer_data$Age[is.na(customer_data$Age)] <- mean(customer_data$Age, na.rm = TRUE)
+
+# Replacing missing Purchase_Amount with the median purchase amount
+customer_data$Purchase_Amount[is.na(customer_data$Purchase_Amount)] <- median(customer_data$Purchase_Amount, na.rm = TRUE)
+
+# Display the cleaned dataset
+print(customer_data)
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+15.• Perform Data Pre-processing in R using the manual dataset by handling missing
+values, encoding categorical variables and displaying the cleaned dataset.
+
+# Load necessary libraries
+library(dplyr)
+
+# Creating a dataset with missing values and categorical variables
+customer_data <- data.frame(
+  Customer_ID = c(101, 102, 103, 104, 105),
+  Name = c("Raj", "Kunal", "Rajesh", "Omkar", "Sandeep"),
+  Age = c(21, NA, 27, NA, 20),
+  Purchase_Amount = c(2000, 1000, NA, 4000, 7000),
+  City = c("Mumbai", "Pune", "Kolkata", "Pune", "Nashik")
+)
+
+# Handling missing values
+# Replacing missing Age values with the mean age
+customer_data$Age[is.na(customer_data$Age)] <- mean(customer_data$Age, na.rm = TRUE)
+
+# Replacing missing Purchase_Amount with the median purchase amount
+customer_data$Purchase_Amount[is.na(customer_data$Purchase_Amount)] <- median(customer_data$Purchase_Amount, na.rm = TRUE)
+
+# Encoding categorical variables (City) as factors
+customer_data$City <- as.factor(customer_data$City)
+
+# Display the cleaned dataset
+print(customer_data)
